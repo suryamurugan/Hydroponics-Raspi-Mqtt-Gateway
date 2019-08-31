@@ -143,6 +143,7 @@ def sensor_display_job():
         sensor_data['humidity'] = humidity
         #serial read ec and ph from nano - JSON structure {"ec":"value","ph":"value"} 
         jsondata = ser.readline().decode("utf-8")
+        print('Dina ASKED ',jsondata)
         data = json.loads(jsondata)        
         sensor_data['ec'] = data.get('ec')
         sensor_data['ph'] = data.get('ph')
@@ -212,8 +213,8 @@ def publish_job():
 
 
 if __name__ == '__main__':
-    scheduler.add_job(sensor_display_job, 'interval', seconds=5, id="sensor_display_job")
-    scheduler.add_job(publish_job, 'interval', seconds=10, id="publish_job")
+    scheduler.add_job(sensor_display_job, 'interval', seconds=10, id="sensor_display_job")
+    scheduler.add_job(publish_job, 'interval', seconds=60, id="publish_job")
     scheduler.add_job(motor_job, 'interval', minutes=15, id="motor_job")
     scheduler.add_job(lighton_job, 'cron', day_of_week='mon-sun',hour=9, id="lighton_job")
     scheduler.add_job(lightoff_job, 'cron', day_of_week='mon-sun',hour=17, id="lightoff_job")
